@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 2.6)
+﻿cmake_minimum_required(VERSION 2.6)
 
 project(MapPractise)
 
 
-set(EXECUTABLE_OUTPUT_PATH $ {PROJECT_SOURCE_DIR}/bin)       #//设置可执行文件的生成路径
+#set(EXECUTABLE_OUTPUT_PATH $ {PROJECT_SOURCE_DIR}/bin)       #//设置可执行文件的生成路径
 
 #include_directories($ {PROJECT_SOURCE_DIR}/src_a ${PROJECT_SOURCE_DIR}/src_so)   //包含库头文件
 
