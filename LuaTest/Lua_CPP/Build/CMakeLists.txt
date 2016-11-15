@@ -4,19 +4,21 @@ cmake_minimum_required(VERSION 2.6)
 # Options
 #####################################################################
 option(MSVC_USE_STATIC_RUNTIME "For MSVC, use static runtime libraries instead of the default dll runtime libraries." ON)
-set(DEPENDENCIES_DEFAULT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../lua5_3_3/include CACHE PATH "The default include dir for 3rd-party dependencies")
-set(DEPENDENCIES_DEFAULT_LIB_DIR ${CMAKE_SOURCE_DIR}/../../lua5_3_3/lib CACHE PATH "The default lib dir for 3rd-party dependencies")
+set(DEPENDENCIES_DEFAULT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/../../lua5_3_3/include )
+set(DEPENDENCIES_DEFAULT_LIB_DIR ${CMAKE_SOURCE_DIR}/../../lua5_3_3/lib )
 
-#####################################################################
-# Project start
-#####################################################################
-get_filename_component(SOLUTION_NAME ${CMAKE_SOURCE_DIR} NAME)
-project(${SOLUTION_NAME})
+project(LuaCpp)
 
-aux_source_directory(. SRC_LIST)
+include_directories(${CMAKE_SOURCE_DIR}/../../lua5_3_3/include)
+link_directories(${CMAKE_SOURCE_DIR}/../../lua5_3_3/lib )
 
-add_executable(${SOLUTION_NAME} ${SRC_LIST})
-#target_link_libraries (${SOLUTION_NAME} lualib)  
+aux_source_directory(${CMAKE_SOURCE_DIR}/../src  SRC_LIST)
+set(TEST_DIR ${CMAKE_SOURCE_DIR}/../src)
+message(STATIC "SRC_LIST:: ${SRC_LIST}")
+message(STATIC "TEST_DIR:: ${TEST_DIR}")
+message(STATIC "DEPENDENCIES_DEFAULT_INCLUDE_DIR:: ${DEPENDENCIES_DEFAULT_INCLUDE_DIR}")
+add_executable(LuaCpp ${SRC_LIST})
+target_link_libraries (LuaCpp lualib)  
  
 
 
