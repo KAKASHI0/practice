@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "ReadConfig.h"
+
 extern "C"  
 {  
 	#include "lua.h"
@@ -18,7 +20,19 @@ using namespace std;
 int main()
 {
 	
-	easyTest();
+	//easyTest();
+	string config = "config.lua";
+	ReadConfig::getInstance().init();
+	if (-1 == ReadConfig::getInstance().loadFile(config))
+	{
+		cout<<"open config error:"<<ReadConfig::getInstance().GetError()<<endl;
+		return -1;
+	}
+	
+	int tst = 0;
+		ReadConfig::getInstance().readInt("test",tst);
+
+	cout<<"hello test:"<<tst<<endl;
 	system("PAUSE");
 	return 0;
 }
