@@ -12,6 +12,7 @@ CInstance::CInstance()
 }
 
 //如果没有 静态内嵌变量并不会走这个析构函数 这个为什么呢
+//答 因为pInstanc是通过new来分配的内存 在手动清除之前是一直有效的 
 CInstance::~CInstance() 
 {
 	if(CInstance::pInstance)

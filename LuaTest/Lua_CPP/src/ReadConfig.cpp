@@ -23,6 +23,7 @@ int ReadConfig::loadFile(string name)
 		luaL_error(L,"loadfil Error,%s ",lua_tostring(L,-1));
 		return -1;
 	}
+	//lua_pcall(L,0,0,0);
 	return 0;
 }
 

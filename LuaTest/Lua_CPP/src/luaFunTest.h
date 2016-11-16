@@ -106,6 +106,8 @@ void easyTest()
 	lua_pushnil(L);
 	lua_pushstring(L, "hello");   
 	stackDump(L);
+	/* true 10 nil `hello' */
+
 	// 	3.取值操作  
 	// 		if( lua_isstring(L,1)){             //判断是否可以转为string  
 	// 			cout<<lua_tostring(L,1)<<endl;  //转为string并返回  
@@ -114,19 +116,19 @@ void easyTest()
 	// 			cout<<lua_tonumber(L,2)<<endl;  
 	// 		}  
 
-	lua_pushvalue(L,1);
-	stackDump(L);
-	/* true 10 nil `hello' */
-
-	lua_replace(L,3);
+	lua_pushvalue(L,1);	//复制栈顶元素到 压入栈顶
 	stackDump(L);
 	/* true 10 nil `hello' true */
 
-	lua_settop(L,6);
+	lua_replace(L,3); //从栈顶弹出元素值并将其设置到指定索引位置，没有任何移动操作
 	stackDump(L);
 	/* true 10 true `hello' */
 
-	lua_remove(L,-3);
+	lua_settop(L,6);	//修改栈顶
+	stackDump(L);
+	/* true 10 true `hello' nil nil */
+
+	lua_remove(L,-3);//删除从栈顶数第三个元素
 	stackDump(L);
 	/* true 10 true nil nil */
 

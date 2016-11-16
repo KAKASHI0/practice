@@ -4,7 +4,7 @@
 
 //使用内嵌类回收内存
 //不用内嵌类不走本身的析构
-
+//答 因为pInstanc是通过new来分配的内存 在手动清除之前是一直有效的 
 class CInstance
 {
 private:
