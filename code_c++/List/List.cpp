@@ -55,20 +55,15 @@ bool DelDumplateNode(SNode*pHead)	//É¾³ýÖØ¸´µÄÔªËØ
 		return false;
 	}
 	SNode *preNode = pHead->pNext;
-	SNode *curNode = preNode->pNext;
-	while(curNode!=NULL)
+	SNode *curNode;
+	while(preNode!=NULL)
 	{
-		if(preNode->value == curNode->value)
+		curNode = preNode->pNext;
+		if(curNode && preNode->value == curNode->value)
 		{
-			SNode*tmp = curNode;
-			curNode = curNode->pNext;
-			delete tmp;
-			preNode->pNext = curNode;
-		}
-		else
-		{
-			preNode = curNode;
-			curNode = preNode->pNext;
+			preNode->pNext = curNode->pNext;
+			delete curNode;
+			
 		}
 	}
 	return true;
