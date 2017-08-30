@@ -17,15 +17,61 @@ SNode *Add(SNode *sHead1,SNode *sHead2);//连表加法
 void Print(SNode *sHead);
 void DestroyNode(SNode *sHead);
 bool Reserval(SNode *sHead, int from, int to);//链表翻转
+bool DelDumplateNode(SNode*pHead);	//删除重复的元素
 
 void TestAdd();//测试链表加法
 void TestReserval();//测试翻转
+void TestDelDumplate();//测试删除重元素
+
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TestReserval();//测试翻转
+	//TestReserval();
+	TestDelDumplate();
 	system("PAUSE");
 	return 0;
+}
+
+void TestDelDumplate()
+{
+	int data[] = {1,4,3,4,5,5,7,8,8,8,8,9};
+	int arrSize = sizeof(data)/sizeof(int);
+	SNode *pHead = new SNode(0); 
+	for (int i=arrSize-1; i>=0; i--)
+	{
+		SNode*node = new SNode(data[i]);
+		node->pNext = pHead->pNext;
+		pHead->pNext = node;
+	}
+	Print(pHead);
+	DelDumplateNode(pHead);
+	Print(pHead);
+	DestroyNode(pHead);
+}
+bool DelDumplateNode(SNode*pHead)	//删除重复的元素
+{
+	if (pHead==NULL)
+	{
+		return false;
+	}
+	SNode *preNode = pHead->pNext;
+	SNode *curNode = preNode->pNext;
+	while(curNode!=NULL)
+	{
+		if(preNode->value == curNode->value)
+		{
+			SNode*tmp = curNode;
+			curNode = curNode->pNext;
+			delete tmp;
+			preNode->pNext = curNode;
+		}
+		else
+		{
+			preNode = curNode;
+			curNode = preNode->pNext;
+		}
+	}
+	return true;
 }
 void TestReserval()//测试翻转
 {
@@ -49,24 +95,23 @@ bool Reserval(SNode *sHead, int from, int to)
 	{
 		return false;
 	}
-	//找到翻转的起始位置
-	SNode* preSNode = NULL;
-	SNode* curSNode = NULL;
-	SNode* nextSNode = NULL; 
+	SNode *preSNode = NULL;
 	int i=0;
+	//寻找翻转的点的前一个元素
 	for (;i<from;i++)
 	{
 		preSNode = sHead;
 		sHead = sHead->pNext;
 	}
-	curSNode = preSNode->pNext;
-	//开始翻转
-	for (;i<=to;i++)
+	//开始翻转到指定元素
+	SNode* curSNode = preSNode->pNext;
+	SNode* nextSNode = NULL;
+	for (;i<to;i++)
 	{
 		nextSNode = curSNode->pNext;
 		curSNode->pNext = nextSNode->pNext;
 		nextSNode->pNext = preSNode->pNext;
-		preSNode->pNext=nextSNode;
+		preSNode->pNext =  nextSNode;
 	}
 }
 
