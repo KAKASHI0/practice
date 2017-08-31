@@ -17,21 +17,130 @@ SNode *Add(SNode *sHead1,SNode *sHead2);//连表加法
 void Print(SNode *sHead);
 void DestroyNode(SNode *sHead);
 bool Reserval(SNode *sHead, int from, int to);//链表翻转
-bool DelDumplateNode(SNode*pHead);	//删除重复的元素
+bool DelDumplateNode(SNode*pHead);	//删除重复的元素 保留第一个
+bool DelDumplateNode_1(SNode*pHead);//删除重复的元素 保留最后一个
+bool DelDumplateNode_2(SNode*pHead);//删除重复的元素 不保留
+bool PartitionNode(SNode *pHead,int pKey);//将两边分成两部分 左边 小于key 右边大于key（链表的快排结构）
 
 void TestAdd();//测试链表加法
 void TestReserval();//测试翻转
 void TestDelDumplate();//测试删除重元素
-
+void TestPartition();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//TestReserval();
-	TestDelDumplate();
+	//TestDelDumplate();
+	TestPartition();
 	system("PAUSE");
 	return 0;
 }
 
+void TestPartition()
+{
+	SNode *pHead = new SNode(0);
+	srand(time(0));
+	for (int i=0; i<20; i++)
+	{
+		SNode *pNode = new SNode(rand()%100);
+		pNode->pNext = pHead->pNext;
+		pHead->pNext = pNode;
+	}
+	Print(pHead);
+	PartitionNode(pHead,30);
+	Print(pHead);
+	DestroyNode(pHead);
+}
+
+bool PartitionNode(SNode *pHead,int pKey)
+{
+	if (pHead==NULL)
+	{
+		return false;
+	}
+	//两个链表
+	SNode*pLeftHead = new SNode(0);
+	SNode*pRightHead = new SNode(0);
+
+	SNode* curNode = pHead->pNext;
+	SNode* leftHead=pLeftHead; //记录链表尾端
+	SNode* rightHead=pRightHead;
+	SNode* nextNode = NULL;
+	//遍历
+	while(curNode)
+	{
+		if (curNode->value < pKey)
+		{
+			leftHead->pNext = curNode;
+			leftHead = curNode;
+		}
+		else
+		{
+			rightHead->pNext = curNode;
+			rightHead = curNode;
+		}
+		curNode = curNode->pNext;
+	}
+	rightHead->pNext=NULL;
+	leftHead->pNext = NULL;
+	leftHead->pNext = pRightHead->pNext;
+	pHead = pLeftHead;
+	delete pRightHead;
+	delete pLeftHead;
+}
+
+bool DelDumplateNode_1(SNode*pHead)//删除重复的元素 保留最后一个
+{
+	if (!pHead)
+	{
+		return false;
+	}
+	SNode* preSNode = pHead->pNext;
+	SNode* curSNode = NULL;
+	while (preSNode)
+	{
+		curSNode = preSNode->pNext;
+		if (curSNode && curSNode->pNext && curSNode->value == curSNode->pNext->value)
+		{
+			preSNode->pNext = curSNode->pNext;
+			delete curSNode;
+			curSNode =  preSNode->pNext;
+			continue;
+		}
+		preSNode = preSNode->pNext;
+	}
+	return true;
+}
+
+bool DelDumplateNode_2(SNode*pHead)//删除重复的元素 不保留
+{
+	if (!pHead)
+	{
+		return false;
+	}
+	bool isDump = false;
+	SNode *preSNode = pHead->pNext;
+	SNode *curSNode = NULL;
+	while (preSNode)
+	{
+		curSNode = preSNode->pNext;
+		while(curSNode && curSNode->pNext && curSNode->value == curSNode->pNext->value)
+		{
+			preSNode->pNext = curSNode->pNext;
+			delete curSNode;
+			curSNode = preSNode->pNext;
+			isDump = true;
+		}
+		if (isDump && preSNode)
+		{
+			preSNode->pNext = curSNode->pNext;
+			delete curSNode;
+			isDump = false;
+		}
+		preSNode = preSNode->pNext;
+	}
+	return true;
+}
 void TestDelDumplate()
 {
 	int data[] = {1,4,3,4,5,5,7,8,8,8,8,9};
@@ -44,7 +153,9 @@ void TestDelDumplate()
 		pHead->pNext = node;
 	}
 	Print(pHead);
-	DelDumplateNode(pHead);
+	//DelDumplateNode(pHead);
+	//DelDumplateNode_1(pHead);
+	DelDumplateNode_2(pHead);
 	Print(pHead);
 	DestroyNode(pHead);
 }
@@ -63,8 +174,9 @@ bool DelDumplateNode(SNode*pHead)	//删除重复的元素
 		{
 			preNode->pNext = curNode->pNext;
 			delete curNode;
-			
+			continue;
 		}
+		preNode = preNode->pNext;
 	}
 	return true;
 }
